@@ -1,0 +1,5 @@
+<%= form_for @post do |f| %>
+  Image: <%= f.file_field :image %><br />
+  Caption: <%= f.text_field :caption %><br />
+  <%= f.submit %>
+<% end %>
