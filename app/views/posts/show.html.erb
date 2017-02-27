@@ -1,0 +1,5 @@
+<%=image_tag(@post.image.url(:medium))%>
+<p><%=@post.caption%></p>
+<% if @post.user.id == current_user.id %>
+<%=link_to("Edit",edit_post_path(@post)) %>
+<% end %>

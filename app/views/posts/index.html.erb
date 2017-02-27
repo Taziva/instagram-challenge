@@ -1,8 +1,21 @@
 <h1>Shotogram</h1>
+<%= link_to("Add Post",new_post_path) %>
 <% @posts.each do |post|%>
-<%= image_tag(post.image.url(:medium)) %>
+<h3><%= post.user.username.capitalize %></h3>
+<%=link_to(image_tag(post.image.url(:medium)),post_path(post)) %>
 <p>
   <%=post.caption%>
 </p>
-
+<% if post.comments.any? %>
+<%post.comments.each do |comment|%>
+<h4><%=comment.user.username%></h4>
+<p><%=comment.thoughts%></p>
+<%if comment.user == current_user%>
+<%=link_to "Delete", post_comment_path(post, comment), method: :delete, data: { confirm: "Are you sure?" }, remote: true%>
 <%end%>
+<% end %>
+<% end %>
+<%= form_for [post, post.comments.new], remote: true do |f|%>
+<%= f.text_field :thoughts, placeholder: 'Add a comment...'%>
+<% end %>
+<% end %>

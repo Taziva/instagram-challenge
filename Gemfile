@@ -33,12 +33,21 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'paperclip', '~> 5.0.0'
 
+gem 'devise'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+
+end
+
+group :test do
+  gem 'capybara'
 end
 
 group :development do

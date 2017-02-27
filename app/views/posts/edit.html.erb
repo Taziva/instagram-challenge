@@ -1,0 +1,7 @@
+<%= image_tag(@post.image.url(:medium)) %>
+<%= form_for @post do |f| %>
+  Image: <%= f.file_field :image %><br />
+  Caption: <%= f.text_field :caption %><br />
+  <%= f.submit %>
+<% end %>
+<%= link_to "Delete Post", post_path(@post), method: :delete, data: { confirm: "Are you sure you want to delete this post?" }%>

@@ -1,21 +1,63 @@
 class PostsController < ApplicationController
+before_action :authenticate_user!
+before_action :post_possession, only: [:edit, :update, :destroy]
 
   def index
     @posts = Post.all
   end
 
   def new
-    @post = Post.new
+    @post = current_user.posts.build
   end
 
   def create
-    @post = Post.create(post_params)
-    redirect_to posts_path
+    @post = current_user.posts.build(post_params)
+    if @post.save
+      flash[:notice] = "New post added!!"
+      redirect_to posts_path
+    else
+      flash.now[:notice] = "Your new post couldn't be created!  Please check and try again"
+      render :new
+    end
   end
 
+def show
+  @post = Post.find(params[:id])
+end
+
+def edit
+  @post = Post.find(params[:id])
+end
+
+def update
+  @post = Post.find(params[:id])
+  if @post.update(post_params)
+      flash[:notice] = "Post updated."
+      redirect_to posts_path
+    else
+      flash.now[:notice] = "Update failed.  Please check the form."
+      render :edit
+    end
+end
+
+def destroy
+  @post = Post.find(params[:id])
+  @post.destroy
+  flash.now[:notice] = "Image Deleted"
+  redirect_to posts_path
+end
   private
 
   def post_params
     params.require(:post).permit(:image, :caption)
   end
+
+  def post_possession
+  @post = Post.find(params[:id])
+  unless current_user == @post.user
+    flash[:alert] = "You can only edit your own posts!"
+    redirect_to root_path
+  end
+end
+
 end
